@@ -1,4 +1,6 @@
 package Service;
+import Hashing.HashTable;
+
 import java.util.Scanner;
 public class CommandInvoker {
     public CLICommand invoke(Commands command) {
@@ -15,13 +17,12 @@ public class CommandInvoker {
 class Search implements CLICommand {
     private final Scanner sc = new Scanner(System.in);
     @Override
-    public long execute(/* INSERT HASH TABLE*/) {
+    public long execute(HashTable table) {
         System.out.print("Enter Word to search: ");
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-//        found = tree.search(word);
-        found = false; //TODO replace this line with search method
+        found = table.search(word); //TODO replace this line with search method
         long endTime = System.nanoTime();
         if(found) {
             System.out.println("Word " + word + " Exists!!");
@@ -35,13 +36,12 @@ class Search implements CLICommand {
 class Insert implements CLICommand {
     private final Scanner sc = new Scanner(System.in);
     @Override
-    public long execute(/* INSERT HASH TABLE*/) {
+    public long execute(HashTable table) {
         System.out.print("Enter Word to insert: ");
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-//        found = tree.insert(word);
-        found = false; //TODO replace this line with insert method
+        found = table.insert(word); //TODO replace this line with insert method
         long endTime = System.nanoTime();
         if(found) {
             System.out.println("Word " + word + " inserted successfully!!");
@@ -55,13 +55,12 @@ class Insert implements CLICommand {
 class Delete implements CLICommand {
     private final Scanner sc = new Scanner(System.in);
     @Override
-    public long execute(/* INSERT HASH TABLE*/) {
+    public long execute(HashTable table) {
         System.out.print("Enter Word to delete: ");
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-//        found = tree.delete(word);
-        found = false; //TODO replace this line with delete method
+        found = table.delete(word); //TODO replace this line with delete method
         long endTime = System.nanoTime();
         if(found) {
             System.out.println("Word " + word + " deleted successfully!!");
