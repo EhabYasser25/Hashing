@@ -1,5 +1,7 @@
 package Service;
 
+import Hashing.HashTable;
+
 public interface CLICommand {
-    long execute(/* INSERT HASH TABLE*/); //TODO insert hash table here
+    long execute(HashTable table); //TODO insert hash table here
 }

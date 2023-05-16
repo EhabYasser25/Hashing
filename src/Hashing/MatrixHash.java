@@ -1,6 +1,6 @@
-import static java.lang.Math.*;
+package Hashing;
 
-import java.util.ArrayList;
+import static java.lang.Math.*;
 import java.util.Random;
 public class MatrixHash {
 
@@ -12,9 +12,9 @@ public class MatrixHash {
     private int u;
 
     // Initialize h with a random b×u binary matrix.
-    public MatrixHash(int powerOf2, int maxBits) {
-        this.b = powerOf2;
-        this.u = maxBits;
+    public MatrixHash(int mapTo, int mapFrom) {
+        this.b = mapTo;
+        this.u = mapFrom;
         matrix = new int[b][u];
         Random random = new Random();
         // Randomly fill the matrix with 0's & 1's
