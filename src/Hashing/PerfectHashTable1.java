@@ -1,4 +1,6 @@
-public class PerfectHashTable1 {
+package Hashing;
+
+public class PerfectHashTable1 implements HashTable {
     int elementCount, currentSize;
     String[] elementArray;
     MatrixHash hash;
@@ -39,17 +41,38 @@ public class PerfectHashTable1 {
         currentSize = elementArray.length;
     }
 
-    public boolean insert(String string) {
+    @Override
+    public boolean insert(String s) {
         elementCount++;
-        int index = hash.getStringKey(string);
+        int index = hash.getStringKey(s);
         // Element already exists.
-        if (elementArray[index].equals(string)) return false;
+        if (elementArray[index].equals(s)) return false;
 
         if (elementArray[index] != null) {
-            
+
         }else{
-            elementArray[index] = string;
+            elementArray[index] = s;
         }
         return true;
+    }
+
+    @Override
+    public boolean delete(String s){
+        return false;
+    }
+
+    @Override
+    public int batchInsert(String[] s){
+        return 0;
+    }
+
+    @Override
+    public int batchDelete(String[] s){
+        return 0;
+    }
+
+    @Override
+    public boolean search(String s){
+        return false;
     }
 }

@@ -1,3 +1,5 @@
+package Hashing;
+
 import static java.lang.Math.*;
 import java.util.Random;
 public class MatrixHash {
