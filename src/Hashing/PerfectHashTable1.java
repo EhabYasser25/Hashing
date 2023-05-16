@@ -4,16 +4,16 @@ import java.util.Arrays;
 
 public class PerfectHashTable1 implements HashTable {
     /**
-     * elementCount: How many elements are actually in the table.
-     * currentSize: The size of the allocated table for the array.
      * maxStrLen: Max bits of the represented strings.
+     * elementCount: How many elements are actually in the table.
+     * rehashes: To keep track of the number of rehashes we needed to perform.
      * elementArray: The actual data structure in which we store the data.
      * hash: The current hashing function.
-     * rehashes: To keep track of the number of rehashes we needed to perform.
      * */
-    int elementCount, currentSize, maxStrLen, rehashes;
-    String[] elementArray;
-    MatrixHash hash;
+    private final int maxStrLen;
+    private int elementCount, rehashes;
+    private String[] elementArray;
+    private MatrixHash hash;
 
     public PerfectHashTable1(ArrayList<String> initialList, int maxStrLen) {
         this.maxStrLen = maxStrLen;
@@ -30,7 +30,6 @@ public class PerfectHashTable1 implements HashTable {
         // Set table size to 2^b
         hash = new MatrixHash(b, this.maxStrLen);
         elementArray = new String[(int)Math.pow(2,b)];
-        currentSize = elementArray.length;
     }
 
     private void hashElements(ArrayList<String> elementsToHash) {
@@ -43,7 +42,6 @@ public class PerfectHashTable1 implements HashTable {
         int b = (int) Math.ceil(Math.log(nSquared)/Math.log(2));
         // Set table size to 2^b.
         elementArray = new String[(int)Math.pow(2,b)];
-        currentSize = elementArray.length;
         // Keep finding random hash functions until no collisions are reached.
         while(collisions){
             hash = new MatrixHash(b, this.maxStrLen);
@@ -112,5 +110,13 @@ public class PerfectHashTable1 implements HashTable {
     public boolean search(String s){
         int index = hash.getStringKey(s);
         return (elementArray[index] != null && elementArray[index].equals(s));
+    }
+
+    public int numberOfElements(){
+        return elementCount;
+    }
+    
+    public int tableSize(){
+        return elementArray.length;
     }
 }
