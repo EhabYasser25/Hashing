@@ -1,14 +1,12 @@
 package Hashing;
-
 import static java.lang.Math.*;
 import java.util.Random;
 public class MatrixHash {
-
-    private boolean[][] matrix;
+    private final boolean[][] matrix;
     // b: log2(size) of the table we want to construct, we want the
     //    table size to be a power of 2, so it's always rounded up.
     // u: The maximum number of bits for an entry to be hashed.
-    private int b;
+    private final int b;
     private static final int u = 32;
 
     // Initialize h with a random b×u binary matrix.

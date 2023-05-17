@@ -1,72 +1,85 @@
 package Hashing;
-
 import java.util.ArrayList;
 
 public class PerfectHashTable2 implements HashTable{
-    private int elementCount, rehashes;
-    private PerfectHashTable1[] table;
-    private MatrixHash hash;
-    public PerfectHashTable2(ArrayList<String> entries) {
-        this.hashElements(entries);
+    private int elementCount, rehashes, totalSize;
+    private final DynamicHashTable[] table;
+    private MatrixHash primaryHash;
+
+    public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size) throws Exception {
+        elementCount = 0;
+        rehashes = 0;
+        totalSize = 0;
+        table = new DynamicHashTable[initialLevel1Size];
+        for (int i=0 ; i<initialLevel1Size ; i++) {
+            table[i] = new DynamicHashTable(initialLevel2Size);
+            totalSize += table[i].tableSize();
+        }
     }
 
-    private void hashElements(ArrayList<String> entries){
+    public PerfectHashTable2(ArrayList<String> entries) {
+        rehashes = -1;
+        elementCount = entries.size();
         ArrayList<String>[] temp;
         int entriesSize = entries.size();
-        // generate a hash function that satisfies the condition that Σ(ni^2) < 4N
+        // generate a primary hash function that satisfies the condition that Σ(ni^2) < 2N
         while (true){
-            this.hash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)));
+            this.primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)));
+            rehashes++;
             temp = new ArrayList[entriesSize];
             for(int i=0 ; i < entriesSize ; i++) temp[i] = new ArrayList<>();
-            for(String entry : entries) temp[hash.getHashValue(entry)].add(entry);
+            for(String entry : entries) temp[primaryHash.getHashValue(entry)].add(entry);
             int tempElementsSquaredSum = 0;
             for(ArrayList<String> bucket : temp)
                 tempElementsSquaredSum += Math.pow(bucket.size(), 2);
-            if(tempElementsSquaredSum < 4 * temp.length)
+            if(tempElementsSquaredSum < 2 * temp.length)
                 break;
         }
-        table = new PerfectHashTable1[entriesSize];
-        elementCount = 0;
+        table = new DynamicHashTable[entriesSize];
         for(int i = 0; i < entriesSize; i++) {
-            table[i] = new PerfectHashTable1(temp[i]);
-            elementCount += table[i].numberOfElements();
+            table[i] = new DynamicHashTable(temp[i]);
+            totalSize = table[i].tableSize();
         }
     }
 
     @Override
-    public boolean insert(String s){
-        boolean success = table[hash.getHashValue(s)].insert(s);
-        if (success)
-            elementCount++;
+    public boolean insert(String s) {
+        boolean success = table[primaryHash.getHashValue(s)].insert(s);
+        if (success) elementCount++;
         return success;
     }
 
     @Override
-    public boolean delete(String s){
-        boolean success = table[hash.getHashValue(s)].delete(s);
-        if (success)
-            elementCount--;
+    public boolean delete(String s) {
+        boolean success = table[primaryHash.getHashValue(s)].delete(s);
+        if (success) elementCount--;
         return success;
     }
 
     @Override
-    public int batchInsert(ArrayList<String> s){
+    public int batchInsert(ArrayList<String> s) {
         int successes = 0;
-        for(String delValue : s)
-            if(insert(delValue)) successes++;
+        for (String entry : s) if (insert(entry)) successes++;
         return successes;
     }
 
     @Override
-    public int batchDelete(ArrayList<String> s){
+    public int batchDelete(ArrayList<String> s) {
         int successes = 0;
-        for(String delValue : s)
-            if(delete(delValue)) successes++;
+        for (String entry : s) if (delete(entry)) successes++;
         return successes;
     }
 
     @Override
-    public boolean search(String s){
-        return this.table[hash.getHashValue(s)].search(s);
+    public boolean search(String s) {return table[primaryHash.getHashValue(s)].search(s);}
+
+    public int numberOfElements() {return elementCount;}
+
+    public int tableSize() {return totalSize;}
+
+    public int getRehashes() {
+        int total = rehashes; // Level 1 construction rehashes.
+        for(DynamicHashTable t : table) total += t.getRehashes();
+        return total;
     }
 }
