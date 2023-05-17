@@ -3,12 +3,12 @@ import java.util.ArrayList;
 
 public class PerfectHashTable1 implements HashTable {
     /**
-     * maxStrLen: Max bits of the represented strings.
      * elementCount: How many elements are actually in the table.
      * rehashes: To keep track of the number of rehashes we needed to perform.
      * elementArray: The actual data structure in which we store the data.
      * hash: The current hashing function.
      * */
+
     private int elementCount, rehashes;
     private ArrayList<String> elementArray;
     private MatrixHash hash;
