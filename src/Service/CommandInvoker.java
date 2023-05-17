@@ -70,13 +70,3 @@ class Delete implements CLICommand {
         return  (endTime - startTime) / 1000;
     }
 }
-
-//class Size implements CLICommands {
-//    @Override
-//    public long execute(BST<String> tree) {
-//        long startTime = System.nanoTime();
-//        System.out.println("Number of saved words = " + tree.getSize());
-//        long endTime = System.nanoTime();
-//        return (endTime - startTime) / 1000;
-//    }
-//}
