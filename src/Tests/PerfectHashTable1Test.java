@@ -49,20 +49,137 @@ public class PerfectHashTable1Test {
     @Test
     public void testSearch() throws Exception {
         PerfectHashTable1 hashTable = new PerfectHashTable1(10);
-        System.out.println(1);
         hashTable.insert("apple");
-        System.out.println(2);
         hashTable.insert("banana");
-        System.out.println(3);
         hashTable.insert("cherry");
-        System.out.println(4);
 
         System.out.println(hashTable.getRehashes());
 
         Assertions.assertTrue(hashTable.search("banana"));
-        System.out.println(5);
         Assertions.assertFalse(hashTable.search("kiwi"));
-        System.out.println(6);
     }
-    
+
+    @Test
+    public void testBatchInsertion() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        Assertions.assertEquals(0, hashTable.numberOfElements());
+
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("apple");
+        fruits.add("banana");
+        fruits.add("cherry");
+
+        int successCount = hashTable.batchInsert(fruits);
+        Assertions.assertEquals(3, successCount);
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testBatchDeletion() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        hashTable.insert("apple");
+        hashTable.insert("banana");
+        hashTable.insert("cherry");
+
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("banana");
+        fruits.add("kiwi");
+
+        int successCount = hashTable.batchDelete(fruits);
+        Assertions.assertEquals(1, successCount);
+        Assertions.assertEquals(2, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testInsertionCollision() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(1);
+        Assertions.assertEquals(0, hashTable.numberOfElements());
+
+        boolean success1 = hashTable.insert("apple");
+        Assertions.assertTrue(success1);
+        Assertions.assertEquals(1, hashTable.numberOfElements());
+
+        boolean success2 = hashTable.insert("banana");
+        Assertions.assertTrue(success2);
+        Assertions.assertEquals(2, hashTable.numberOfElements());
+
+        boolean success3 = hashTable.insert("cherry");
+        Assertions.assertFalse(success3);
+        Assertions.assertEquals(2, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testDeletionNonexistent() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        hashTable.insert("apple");
+        hashTable.insert("banana");
+        hashTable.insert("cherry");
+
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+
+        boolean success = hashTable.delete("kiwi");
+        Assertions.assertFalse(success);
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testBatchInsertionPartial() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(5);
+        Assertions.assertEquals(0, hashTable.numberOfElements());
+
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("apple");
+        fruits.add("banana");
+        fruits.add("cherry");
+        fruits.add("kiwi");
+        fruits.add("mango");
+
+        int successCount = hashTable.batchInsert(fruits);
+        Assertions.assertEquals(5, successCount);
+        Assertions.assertEquals(5, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testBatchDeletionPartial() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(5);
+        hashTable.insert("apple");
+        hashTable.insert("banana");
+        hashTable.insert("cherry");
+        hashTable.insert("kiwi");
+        hashTable.insert("mango");
+
+        Assertions.assertEquals(5, hashTable.numberOfElements());
+
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("banana");
+        fruits.add("kiwi");
+        fruits.add("grape");
+
+        int successCount = hashTable.batchDelete(fruits);
+        Assertions.assertEquals(2, successCount);
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+    }
+
+    @Test
+    public void testRehashing() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(2);
+        Assertions.assertEquals(0, hashTable.numberOfElements());
+        Assertions.assertEquals(4, hashTable.tableSize());
+
+        boolean success1 = hashTable.insert("apple");
+        Assertions.assertTrue(success1);
+        Assertions.assertEquals(1, hashTable.numberOfElements());
+
+        boolean success2 = hashTable.insert("banana");
+        Assertions.assertTrue(success2);
+        Assertions.assertEquals(2, hashTable.numberOfElements());
+
+        boolean success3 = hashTable.insert("cherry");
+        Assertions.assertTrue(success3);
+        Assertions.assertEquals(3, hashTable.numberOfElements());
+
+        Assertions.assertEquals(1, hashTable.getRehashes());
+    }
 }
