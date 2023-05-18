@@ -25,14 +25,10 @@ public class MatrixHash {
         String binaryData = Integer.toBinaryString(data);
         boolean[] binaryHashValue = new boolean[b];
         // Multiply matrix by binary representation to get the binary key.
-        for(i=0 ; i<b ; i++){
-            for (j=0 ; j<binaryData.length() ; j++) {
-                if (matrix[i][j] & binaryData.charAt(j) == '1'){
-                    binaryHashValue[i] = true;
-                    break;
-                }
-            }
-        }
+        for(i=0 ; i<b ; i++)
+            for (j=0 ; j<binaryData.length() ; j++)
+                if (matrix[i][j] && binaryData.charAt(j) == '1')
+                    binaryHashValue[i] = !binaryHashValue[i];
         // Get the integer value of the binary key.
         for (i=0 ; i<b ; i++)
             key += (binaryHashValue[i])? pow(2,b-i-1) : 0;
@@ -41,22 +37,8 @@ public class MatrixHash {
 
     // Overloaded Hash value to accept Strings
     public int getHashValue(String stringData) {
-        int i, j, key = 0, data = stringData.hashCode();
-        String binaryData = Integer.toBinaryString(data);
-        boolean[] binaryHashValue = new boolean[b];
-        // Multiply matrix by binary representation to get the binary key.
-        for(i=0 ; i<b ; i++){
-            for (j=0 ; j<binaryData.length() ; j++) {
-                if (matrix[i][j] & binaryData.charAt(j) == '1'){
-                    binaryHashValue[i] = true;
-                    break;
-                }
-            }
-        }
-        // Get the integer value of the binary key.
-        for (i=0 ; i<b ; i++)
-            key += (binaryHashValue[i])? pow(2,b-i-1) : 0;
-        return key;
+        int data = stringData.hashCode();
+        return getHashValue(data);
     }
 
     // --------------- Testing stuff ---------------
