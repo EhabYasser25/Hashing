@@ -2,18 +2,26 @@ package Hashing;
 import java.util.ArrayList;
 
 public class PerfectHashTable2 implements HashTable{
-    private int elementCount, rehashes, totalSize;
+    private int elementCount, rehashes;
     private final DynamicHashTable[] table;
     private MatrixHash primaryHash;
 
     public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size) throws Exception {
         elementCount = 0;
         rehashes = 0;
-        totalSize = 0;
         table = new DynamicHashTable[initialLevel1Size];
-        for (int i=0 ; i<initialLevel1Size ; i++) {
+        for (int i=0 ; i<initialLevel1Size ; i++)
             table[i] = new DynamicHashTable(initialLevel2Size);
-            totalSize += table[i].tableSize();
+    }
+
+    public PerfectHashTable2(int initialLevel1Size) throws Exception {
+        elementCount = 0;
+        rehashes = 0;
+        table = new DynamicHashTable[initialLevel1Size];
+        System.out.println(initialLevel1Size);
+        for (int i=0 ; i<initialLevel1Size ; i++) {
+            table[i] = new DynamicHashTable(10);
+            System.out.println(table[i].tableSize());
         }
     }
 
@@ -36,10 +44,8 @@ public class PerfectHashTable2 implements HashTable{
                 break;
         }
         table = new DynamicHashTable[entriesSize];
-        for(int i = 0; i < entriesSize; i++) {
+        for(int i = 0; i < entriesSize; i++)
             table[i] = new DynamicHashTable(temp[i]);
-            totalSize = table[i].tableSize();
-        }
     }
 
     @Override
@@ -75,7 +81,12 @@ public class PerfectHashTable2 implements HashTable{
 
     public int numberOfElements() {return elementCount;}
 
-    public int tableSize() {return totalSize;}
+    public int tableSize() {
+        int size = 0;
+        for (DynamicHashTable t : table)
+            size += t.tableSize();
+        return  size;
+    }
 
     public int getRehashes() {
         int total = rehashes; // Level 1 construction rehashes.
