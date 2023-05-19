@@ -97,6 +97,10 @@ public class PerfectHashTable2 implements HashTable{
         return  size;
     }
 
+    public int primaryTableSize() {
+        return table.length;
+    }
+
     public int getRehashes() {
         int total = rehashes; // Level 1 construction rehashes.
         for(DynamicHashTable t : table) total += t.getRehashes();
