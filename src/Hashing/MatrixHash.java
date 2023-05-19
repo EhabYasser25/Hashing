@@ -44,7 +44,8 @@ public class MatrixHash {
     // --------------- Testing stuff ---------------
     public void printMatrix(){
         for (boolean[] row : matrix){
-            for (boolean elem : row) System.out.print(elem + " ");
+            for (boolean elem : row)
+                System.out.print(elem + " ");
             System.out.println();
         }
     }
