@@ -18,11 +18,8 @@ public class PerfectHashTable2 implements HashTable{
         elementCount = 0;
         rehashes = 0;
         table = new DynamicHashTable[initialLevel1Size];
-        System.out.println(initialLevel1Size);
-        for (int i=0 ; i<initialLevel1Size ; i++) {
+        for (int i=0 ; i<initialLevel1Size ; i++)
             table[i] = new DynamicHashTable(10);
-            System.out.println(table[i].tableSize());
-        }
     }
 
     public PerfectHashTable2(ArrayList<String> entries) {
