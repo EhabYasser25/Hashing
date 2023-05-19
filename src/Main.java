@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Main {
-    private static final int MIN_STRING_LENGTH = 30; // Minimum length of each random string
-    private static final int MAX_STRING_LENGTH = 30; // Maximum length of each random string
-    private static final int NUM_STRINGS = 18000; // Number of random strings to generate
+    private static final int MIN_STRING_LENGTH = 15; // Minimum length of each random string
+    private static final int MAX_STRING_LENGTH = 15; // Maximum length of each random string
+    private static final int NUM_STRINGS = 1000000; // Number of random strings to generate
 
     public static void main(String[] args) {
         String fileName = "random_strings.txt";

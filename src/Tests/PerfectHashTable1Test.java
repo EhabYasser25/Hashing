@@ -127,7 +127,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testBatchInsertionPartial() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(4,6);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(4, 6);
         hashTable.insert("cherry");
         Assertions.assertEquals(1, hashTable.numberOfElements());
 
