@@ -12,21 +12,24 @@ public class DynamicHashTable implements HashTable {
     private int elementCount, rehashes, currentBound;
     private ArrayList<String> elementArray;
     private MatrixHash hash;
+    private final int maxStrBits;
 
-    public DynamicHashTable(ArrayList<String> initialList) {
+    public DynamicHashTable(ArrayList<String> initialList, int maxStrLen) {
+        this.maxStrBits = maxStrLen * 8;
         rehashes = -1;
         hashElements(initialList, true);
     }
 
-    public DynamicHashTable(int initialSize) throws Exception {
+    public DynamicHashTable(int initialSize, int maxStrLen) throws Exception {
         if (initialSize < 0) throw new Exception("Negative initial size for a hash table.");
         elementCount = 0;
         currentBound = initialSize;
+        this.maxStrBits = maxStrLen * 8;
         int nSquared = (int) Math.pow(initialSize,2);
         // Get table size as the next power of 2 after the initial table size.
         int b = (nSquared != 0)? (int) Math.ceil(Math.log(nSquared)/Math.log(2)) : 0;
         // Set table size to 2^b
-        hash = new MatrixHash(b);
+        hash = new MatrixHash(b, this.maxStrBits);
         elementArray = new ArrayList<>((int)Math.pow(2,b));
     }
 
@@ -50,7 +53,7 @@ public class DynamicHashTable implements HashTable {
         while(collisions){
             // Set table size to 2^b.
             elementArray = new ArrayList<>((int)Math.pow(2,b));
-            hash = new MatrixHash(b);
+            hash = new MatrixHash(b, this.maxStrBits);
             collisions = false; fails = 0;
             for (String entry : nonNull) {
                 index = hash.getHashValue(entry);

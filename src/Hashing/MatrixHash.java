@@ -1,53 +1,51 @@
 package Hashing;
-import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
-public class MatrixHash {
-    private final boolean[][] matrix;
-    // b: log2(size) of the table we want to construct, we want the
-    //    table size to be a power of 2, so it's always rounded up.
-    // u: The maximum number of bits for an entry to be hashed.
+public class MatrixHash{
     private final int b;
-    private static final int u = 32;
+    public final int u;
+    private final char[][] hashFunction;
 
-    // Initialize h with a random b×u binary matrix.
-    public MatrixHash(int mapTo) {
-        this.b = mapTo;
-        matrix = new boolean[b][u];
-        Random random = new Random();
-        // Randomly fill the matrix with 0's & 1's
-        for(int i=0 ; i<b ; i++)
-            for(int j=0 ; j<u ; j++)
-                matrix[i][j] = random.nextBoolean();
-    }
+    public MatrixHash(int b, int u){
+        this.b = b;
+        this.u = u;
+        this.hashFunction = new char[this.u][(int)(Math.ceil(b / 8.0))];
+        Random rand = new Random();
 
-    public int getHashValue(int data) {
-        int i, j, key = 0;
-        String binaryData = Integer.toBinaryString(data);
-        boolean[] binaryHashValue = new boolean[b];
-        // Multiply matrix by binary representation to get the binary key.
-        for(i=0 ; i<b ; i++)
-            for (j=0 ; j<binaryData.length() ; j++)
-                if (matrix[i][j] && binaryData.charAt(j) == '1')
-                    binaryHashValue[i] = !binaryHashValue[i];
-        // Get the integer value of the binary key.
-        for (i=0 ; i<b ; i++)
-            key += (binaryHashValue[i])? pow(2,b-i-1) : 0;
-        return key;
-    }
-
-    // Overloaded Hash value to accept Strings
-    public int getHashValue(String stringData) {
-        int data = stringData.hashCode();
-        return getHashValue(data);
-    }
-
-    // --------------- Testing stuff ---------------
-    public void printMatrix(){
-        for (boolean[] row : matrix){
-            for (boolean elem : row)
-                System.out.print(elem + " ");
-            System.out.println();
+        for(int row = 0; row < this.u; row++){
+            for(int col = 0; col < this.hashFunction[0].length; col++)
+                this.hashFunction[row][col] = (char)rand.nextInt(256);
         }
     }
-    // --------------- Testing stuff ---------------
+
+    public int getHashValue(String val){
+        if(val.length() * 8 > this.u)
+            return -1;
+        char[] key = new char[this.hashFunction[0].length];
+        for(int i = 0; i < key.length; i++)
+            key[i] = 0;
+        char[] valChars = val.toCharArray();
+        for(int uCounter = 0; uCounter < valChars.length; uCounter++){
+            for(int bitCounter = 0; bitCounter < 8; bitCounter++){
+                if((valChars[uCounter]>>bitCounter & 1) == 1){
+                    for(int bCounter = 0; bCounter < this.hashFunction[0].length; bCounter++)
+                        key[bCounter] ^= this.hashFunction[8 * uCounter + bitCounter][bCounter];
+                }
+
+            }
+        }
+        int ret = 0;
+        for(int i = 0; i < key.length; i++)
+            ret += (((int)key[i]) << (8 * i));
+        for(int i = 0; i < (key.length * 8 - this.b); i++)
+            ret &= ~(1 << (key.length * 8 - i));
+        return ret >> 1;
+    }
+
+    public String randomString(int maxStrLen) {
+        byte[] array = new byte[maxStrLen];
+        new Random().nextBytes(array);
+
+        return new String(array, StandardCharsets.UTF_8);
+    }
 }

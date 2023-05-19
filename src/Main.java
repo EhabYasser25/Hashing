@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Main {
-    private static final int MIN_STRING_LENGTH = 7; // Minimum length of each random string
-    private static final int MAX_STRING_LENGTH = 7; // Maximum length of each random string
+    private static final int MIN_STRING_LENGTH = 6; // Minimum length of each random string
+    private static final int MAX_STRING_LENGTH = 6; // Maximum length of each random string
     private static final int NUM_STRINGS = 15000; // Number of random strings to generate
 
     public static void main(String[] args) {

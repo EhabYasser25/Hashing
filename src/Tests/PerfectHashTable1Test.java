@@ -12,7 +12,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testInsertion() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         Assertions.assertEquals(0, hashTable.numberOfElements());
         Assertions.assertEquals(128, hashTable.tableSize());
 
@@ -31,7 +31,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testDeletion() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         hashTable.insert("apple");
         hashTable.insert("banana");
         hashTable.insert("cherry");
@@ -49,7 +49,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testSearch() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         hashTable.insert("apple");
         hashTable.insert("banana");
         hashTable.insert("cherry");
@@ -62,7 +62,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testBatchInsertion() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         Assertions.assertEquals(0, hashTable.numberOfElements());
 
         ArrayList<String> fruits = new ArrayList<>();
@@ -77,7 +77,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testBatchDeletion() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         hashTable.insert("apple");
         hashTable.insert("banana");
         hashTable.insert("cherry");
@@ -95,7 +95,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testInsertionCollision() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(1);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(1,6);
         Assertions.assertEquals(0, hashTable.numberOfElements());
 
         boolean success1 = hashTable.insert("apple");
@@ -113,7 +113,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testDeletionNonexistent() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(10);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(10,6);
         hashTable.insert("apple");
         hashTable.insert("banana");
         hashTable.insert("cherry");
@@ -127,7 +127,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testBatchInsertionPartial() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(4);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(4,6);
         hashTable.insert("cherry");
         Assertions.assertEquals(1, hashTable.numberOfElements());
 
@@ -145,7 +145,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testBatchDeletionPartial() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(5);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(5,6);
         hashTable.insert("apple");
         hashTable.insert("banana");
         hashTable.insert("cherry");
@@ -166,19 +166,20 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testRehashing() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(15000);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(15000,6);
         Assertions.assertEquals(0, hashTable.numberOfElements());
         Assertions.assertEquals(268435456, hashTable.tableSize());
 
         FileManager fileReader = new FileManager();
         ArrayList<String> words = fileReader.readFile("./random_strings.txt");
         hashTable.batchInsert(words);
+        System.out.println(hashTable.getRehashes());
         Assertions.assertEquals(15000, hashTable.numberOfElements());
     }
 
     @Test
     public void testRehashes() throws Exception {
-        PerfectHashTable1 table = new PerfectHashTable1(10);
+        PerfectHashTable1 table = new PerfectHashTable1(10,7);
         table.insert("hello");
         table.insert("world");
         table.insert("goodbye");
@@ -186,7 +187,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testEmptyTable() throws Exception {
-        PerfectHashTable1 table = new PerfectHashTable1(10);
+        PerfectHashTable1 table = new PerfectHashTable1(10,7);
         Assertions.assertEquals(0, table.numberOfElements());
         Assertions.assertEquals(128, table.tableSize());
         Assertions.assertEquals(0, table.getRehashes());
@@ -194,7 +195,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testFullTable() throws Exception {
-        PerfectHashTable1 table = new PerfectHashTable1(1);
+        PerfectHashTable1 table = new PerfectHashTable1(1,5);
         table.insert("hello");
         Assertions.assertEquals(1, table.numberOfElements());
         Assertions.assertEquals(1, table.tableSize());

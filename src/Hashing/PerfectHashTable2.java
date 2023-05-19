@@ -5,31 +5,35 @@ public class PerfectHashTable2 implements HashTable{
     private int elementCount, rehashes;
     private final DynamicHashTable[] table;
     private MatrixHash primaryHash;
+    private final int maxStrBits;
 
-    public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size) throws Exception {
+    public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size, int maxStrLen) throws Exception {
         elementCount = 0;
         rehashes = 0;
+        this.maxStrBits = maxStrLen * 8;
         table = new DynamicHashTable[initialLevel1Size];
         for (int i=0 ; i<initialLevel1Size ; i++)
-            table[i] = new DynamicHashTable(initialLevel2Size);
+            table[i] = new DynamicHashTable(initialLevel2Size, maxStrLen);
     }
 
-    public PerfectHashTable2(int initialLevel1Size) throws Exception {
+    public PerfectHashTable2(int initialLevel1Size, int maxStrLen) throws Exception {
         elementCount = 0;
         rehashes = 0;
+        this.maxStrBits = maxStrLen * 8;
         table = new DynamicHashTable[initialLevel1Size];
         for (int i=0 ; i<initialLevel1Size ; i++)
-            table[i] = new DynamicHashTable(10);
+            table[i] = new DynamicHashTable(10, maxStrLen);
     }
 
-    public PerfectHashTable2(ArrayList<String> entries) {
+    public PerfectHashTable2(ArrayList<String> entries, int maxStrLen) {
         rehashes = -1;
         elementCount = entries.size();
+        this.maxStrBits = maxStrLen * 8;
         ArrayList<String>[] temp;
         int entriesSize = entries.size();
         // generate a primary hash function that satisfies the condition that Σ(ni^2) < 2N
         while (true){
-            this.primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)));
+            this.primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)), maxStrBits);
             rehashes++;
             temp = new ArrayList[entriesSize];
             for(int i=0 ; i < entriesSize ; i++) temp[i] = new ArrayList<>();
@@ -42,7 +46,7 @@ public class PerfectHashTable2 implements HashTable{
         }
         table = new DynamicHashTable[entriesSize];
         for(int i = 0; i < entriesSize; i++)
-            table[i] = new DynamicHashTable(temp[i]);
+            table[i] = new DynamicHashTable(temp[i], maxStrLen);
     }
 
     @Override
