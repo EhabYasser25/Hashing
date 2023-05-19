@@ -24,7 +24,7 @@ public class PerfectHashTable2 implements HashTable{
         table = new DynamicHashTable[initialLevel1Size];
         primaryHash = new MatrixHash((int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2)), maxStrBits);
         for (int i=0 ; i<initialLevel1Size ; i++)
-            table[i] = new DynamicHashTable(10, maxStrLen);
+            table[i] = new DynamicHashTable(0, maxStrLen);
     }
 
     public PerfectHashTable2(ArrayList<String> entries, int maxStrLen) {

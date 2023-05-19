@@ -1,16 +1,17 @@
 package Hashing;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Random;
 public class MatrixHash{
-    public final int b,u;
-    private final char[][] hashFunction;
+    private int b;
+    public int u;
+    private char[][] hashFunction;
 
     public MatrixHash(int b, int u){
         this.b = b;
         this.u = u;
         this.hashFunction = new char[this.u][(int)(Math.ceil(b / 8.0))];
         Random rand = new Random();
+
         for(int row = 0; row < this.u; row++){
             for(int col = 0; col < this.hashFunction[0].length; col++)
                 this.hashFunction[row][col] = (char)rand.nextInt(256);
@@ -21,7 +22,8 @@ public class MatrixHash{
         if(val.length() * 8 > this.u)
             return -1;
         char[] key = new char[this.hashFunction[0].length];
-        Arrays.fill(key, (char) 0);
+        for(int i = 0; i < key.length; i++)
+            key[i] = 0;
         char[] valChars = val.toCharArray();
         for(int uCounter = 0; uCounter < valChars.length; uCounter++){
             for(int bitCounter = 0; bitCounter < 8; bitCounter++){
@@ -38,5 +40,12 @@ public class MatrixHash{
         for(int i = 0; i < (key.length * 8 - this.b); i++)
             ret &= ~(1 << (key.length * 8 - i));
         return ret >> 1;
+    }
+
+    public String randomString(int maxStrLen) {
+        byte[] array = new byte[maxStrLen];
+        new Random().nextBytes(array);
+
+        return new String(array, StandardCharsets.UTF_8);
     }
 }
