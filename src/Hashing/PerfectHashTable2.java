@@ -8,9 +8,10 @@ public class PerfectHashTable2 implements HashTable{
     private final int maxStrBits;
 
     public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size, int maxStrLen) throws Exception {
-        elementCount = 0;
         rehashes = 0;
-        this.maxStrBits = maxStrLen * 8;
+        elementCount = 0;
+        maxStrBits = maxStrLen * 8;
+        primaryHash = new MatrixHash((int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2)), maxStrBits);
         table = new DynamicHashTable[initialLevel1Size];
         for (int i=0 ; i<initialLevel1Size ; i++)
             table[i] = new DynamicHashTable(initialLevel2Size, maxStrLen);
@@ -19,8 +20,9 @@ public class PerfectHashTable2 implements HashTable{
     public PerfectHashTable2(int initialLevel1Size, int maxStrLen) throws Exception {
         elementCount = 0;
         rehashes = 0;
-        this.maxStrBits = maxStrLen * 8;
+        maxStrBits = maxStrLen * 8;
         table = new DynamicHashTable[initialLevel1Size];
+        primaryHash = new MatrixHash((int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2)), maxStrBits);
         for (int i=0 ; i<initialLevel1Size ; i++)
             table[i] = new DynamicHashTable(10, maxStrLen);
     }
@@ -28,12 +30,12 @@ public class PerfectHashTable2 implements HashTable{
     public PerfectHashTable2(ArrayList<String> entries, int maxStrLen) {
         rehashes = -1;
         elementCount = entries.size();
-        this.maxStrBits = maxStrLen * 8;
+        maxStrBits = maxStrLen * 8;
         ArrayList<String>[] temp;
         int entriesSize = entries.size();
         // generate a primary hash function that satisfies the condition that Σ(ni^2) < 2N
         while (true){
-            this.primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)), maxStrBits);
+            primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)), maxStrBits);
             rehashes++;
             temp = new ArrayList[entriesSize];
             for(int i=0 ; i < entriesSize ; i++) temp[i] = new ArrayList<>();
