@@ -2,9 +2,9 @@ package Hashing;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 public class MatrixHash{
-    private final int b;
-    public final int u;
-    private final char[][] hashFunction;
+    private int b;
+    public int u;
+    private char[][] hashFunction;
 
     public MatrixHash(int b, int u){
         this.b = b;

@@ -166,7 +166,7 @@ public class PerfectHashTable1Test {
 
     @Test
     public void testRehashing() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(15000,6);
+        PerfectHashTable1 hashTable = new PerfectHashTable1(15000,30);
         Assertions.assertEquals(0, hashTable.numberOfElements());
         Assertions.assertEquals(268435456, hashTable.tableSize());
 
@@ -183,6 +183,7 @@ public class PerfectHashTable1Test {
         table.insert("hello");
         table.insert("world");
         table.insert("goodbye");
+        System.out.println(table.getRehashes());
     }
 
     @Test

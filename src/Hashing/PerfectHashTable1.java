@@ -75,7 +75,10 @@ public class PerfectHashTable1 implements HashTable{
         // Keep finding random hash functions until no collisions are reached.
         while(collisions){
             // Reset the main array and the hash function.
-            elementArray = new String[elementArray.length];
+            int s = elementArray.length;
+            elementArray = null;
+            System.gc();
+            elementArray = new String[s];
             hash = new MatrixHash(bits, this.maxStrBits);
             collisions = false; rehashes++;
             for (String entry : nonNull) {
@@ -123,7 +126,8 @@ public class PerfectHashTable1 implements HashTable{
     public int batchInsert(ArrayList<String> s) {
         int successes = 0;
         for (String entry : s)
-            if (insert(entry)) successes++;
+            if (insert(entry))
+                successes++;
         return successes;
     }
 
