@@ -10,12 +10,12 @@ public class DynamicHashTable implements HashTable {
      * hash: The current hashing function.
      * */
     private int elementCount, rehashes, currentBound;
-    private ArrayList<String> elementArray;
+    private String[] elementArray;
     private MatrixHash hash;
     private final int maxStrBits;
 
     public DynamicHashTable(ArrayList<String> initialList, int maxStrLen) {
-        this.maxStrBits = maxStrLen * 8;
+        maxStrBits = maxStrLen * 8;
         rehashes = -1;
         hashElements(initialList, true);
     }
@@ -24,13 +24,13 @@ public class DynamicHashTable implements HashTable {
         if (initialSize < 0) throw new Exception("Negative initial size for a hash table.");
         elementCount = 0;
         currentBound = initialSize;
-        this.maxStrBits = maxStrLen * 8;
+        maxStrBits = maxStrLen * 8;
         int nSquared = (int) Math.pow(initialSize,2);
         // Get table size as the next power of 2 after the initial table size.
         int b = (nSquared != 0)? (int) Math.ceil(Math.log(nSquared)/Math.log(2)) : 0;
         // Set table size to 2^b
         hash = new MatrixHash(b, this.maxStrBits);
-        elementArray = new ArrayList<>((int)Math.pow(2,b));
+        elementArray = new String[(int)Math.pow(2,b)];
     }
 
     private int hashElements(ArrayList<String> elementsToHash, boolean init) {
@@ -41,7 +41,8 @@ public class DynamicHashTable implements HashTable {
             nonNull = new ArrayList<>(elementsToHash);
         else {
             nonNull = new ArrayList<>();
-            for (String s : elementsToHash) if (s != null) nonNull.add(s);
+            for (String s : elementArray) if (s != null) nonNull.add(s);
+            nonNull.addAll(elementsToHash);
         }
         // Set element count to the size of the list.
         elementCount = nonNull.size();
@@ -52,15 +53,15 @@ public class DynamicHashTable implements HashTable {
         // Keep finding random hash functions until no collisions are reached.
         while(collisions){
             // Set table size to 2^b.
-            elementArray = new ArrayList<>((int)Math.pow(2,b));
+            elementArray = new String[(int)Math.pow(2,b)];
             hash = new MatrixHash(b, this.maxStrBits);
             collisions = false; fails = 0;
             for (String entry : nonNull) {
                 index = hash.getHashValue(entry);
                 // Only insert if the element is in an empty spot.
-                if (elementArray.get(index) == null)
-                    elementArray.set(index, entry);
-                else if (elementArray.get(index).equals(entry)) // Element already exists
+                if (elementArray[index] == null)
+                    elementArray[index] = entry;
+                else if (elementArray[index].equals(entry)) // Element already exists
                     fails++;
                 else{ // A collision has occurred
                     collisions = true;
@@ -76,14 +77,13 @@ public class DynamicHashTable implements HashTable {
     public boolean insert(String s) {
         int index = hash.getHashValue(s);
         // Element does not exist
-        if (elementArray.get(index) != null) {
-            if (elementArray.get(index).equals(s)) return false; // Element already exists.
-            // TODO Change to deep copy if needed
-            ArrayList<String> temp = new ArrayList<>(elementArray);
+        if (elementArray[index] != null) {
+            if (elementArray[index].equals(s)) return false; // Element already exists.
+            ArrayList<String> temp = new ArrayList<>();
             temp.add(s);
             hashElements(temp,false);
         }else{
-            elementArray.set(index,s);
+            elementArray[index] = s;
             elementCount++;
         }
         return true;
@@ -92,8 +92,8 @@ public class DynamicHashTable implements HashTable {
     @Override
     public boolean delete(String s){
         int index = hash.getHashValue(s);
-        if (elementArray.get(index) == null) return false;
-        elementArray.set(index, null);
+        if (elementArray[index] == null) return false;
+        elementArray[index] = null;
         elementCount--;
         return true;
     }
@@ -106,9 +106,7 @@ public class DynamicHashTable implements HashTable {
         // If the new count will be greater than the current bound,
         // rehash with a new list composed of original + new elements.
         if (newCount > currentBound) {
-            ArrayList<String> temp = new ArrayList<>(elementArray);
-            temp.addAll(s);
-            int fails = hashElements(temp, false);
+            int fails = hashElements(s, false);
             successes = s.size() - fails;
         }else{
             for (String entry : s) {
@@ -130,7 +128,7 @@ public class DynamicHashTable implements HashTable {
     @Override
     public boolean search(String s){
         int index = hash.getHashValue(s);
-        return (elementArray.get(index) != null && elementArray.get(index).equals(s));
+        return (elementArray[index] != null && elementArray[index].equals(s));
     }
 
     public int numberOfElements(){
@@ -138,7 +136,7 @@ public class DynamicHashTable implements HashTable {
     }
 
     public int tableSize(){
-        return elementArray.size();
+        return elementArray.length;
     }
 
     public int getRehashes() { return rehashes; }
