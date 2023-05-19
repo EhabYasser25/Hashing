@@ -14,7 +14,7 @@ public class PerfectHashTable2Test {
     public void testInsertion() throws Exception {
         PerfectHashTable2 hashTable = new PerfectHashTable2(10,6);
         Assertions.assertEquals(0, hashTable.numberOfElements());
-        Assertions.assertEquals(10, hashTable.tableSize());
+        Assertions.assertEquals(16, hashTable.tableSize());
 
         boolean success1 = hashTable.insert("apple");
         Assertions.assertTrue(success1);

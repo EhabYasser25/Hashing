@@ -8,37 +8,44 @@ public class PerfectHashTable2 implements HashTable{
     private final int maxStrBits;
 
     public PerfectHashTable2(int initialLevel1Size, int initialLevel2Size, int maxStrLen) throws Exception {
-        rehashes = 0;
-        elementCount = 0;
+        int b = (int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2));
+        int roundedUpSize = (int) Math.pow(2,b);
         maxStrBits = maxStrLen * 8;
-        primaryHash = new MatrixHash((int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2)), maxStrBits);
-        table = new DynamicHashTable[initialLevel1Size];
-        for (int i=0 ; i<initialLevel1Size ; i++)
+        table = new DynamicHashTable[roundedUpSize];
+        primaryHash = new MatrixHash(b, maxStrBits);
+        elementCount = 0;
+        rehashes = 0;
+        for (int i=0 ; i<roundedUpSize ; i++)
             table[i] = new DynamicHashTable(initialLevel2Size, maxStrLen);
     }
 
     public PerfectHashTable2(int initialLevel1Size, int maxStrLen) throws Exception {
+        int b = (int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2));
+        int roundedUpSize = (int) Math.pow(2,b);
+        maxStrBits = maxStrLen * 8;
+        table = new DynamicHashTable[roundedUpSize];
+        primaryHash = new MatrixHash(b, maxStrBits);
         elementCount = 0;
         rehashes = 0;
-        maxStrBits = maxStrLen * 8;
-        table = new DynamicHashTable[initialLevel1Size];
-        primaryHash = new MatrixHash((int) Math.ceil(Math.log(initialLevel1Size)/Math.log(2)), maxStrBits);
-        for (int i=0 ; i<initialLevel1Size ; i++)
+        for (int i=0 ; i<roundedUpSize ; i++)
             table[i] = new DynamicHashTable(0, maxStrLen);
     }
 
     public PerfectHashTable2(ArrayList<String> entries, int maxStrLen) {
-        rehashes = -1;
-        elementCount = entries.size();
-        maxStrBits = maxStrLen * 8;
-        ArrayList<String>[] temp;
         int entriesSize = entries.size();
+        int b = (int) Math.ceil(Math.log(entriesSize)/Math.log(2));
+        int roundedUpSize = (int) Math.pow(2,b);
+        maxStrBits = maxStrLen * 8;
+        table = new DynamicHashTable[roundedUpSize];
+        elementCount = entriesSize;
+        rehashes = -1;
+        ArrayList<String>[] temp;
         // generate a primary hash function that satisfies the condition that Σ(ni^2) < 2N
         while (true){
-            primaryHash = new MatrixHash((int) Math.ceil(Math.log(entriesSize)/Math.log(2)), maxStrBits);
+            primaryHash = new MatrixHash(b, maxStrBits);
             rehashes++;
-            temp = new ArrayList[entriesSize];
-            for(int i=0 ; i < entriesSize ; i++) temp[i] = new ArrayList<>();
+            temp = new ArrayList[roundedUpSize];
+            for(int i=0 ; i < roundedUpSize ; i++) temp[i] = new ArrayList<>();
             for(String entry : entries) temp[primaryHash.getHashValue(entry)].add(entry);
             int tempElementsSquaredSum = 0;
             for(ArrayList<String> bucket : temp)
@@ -46,8 +53,7 @@ public class PerfectHashTable2 implements HashTable{
             if(tempElementsSquaredSum < 2 * temp.length)
                 break;
         }
-        table = new DynamicHashTable[entriesSize];
-        for(int i = 0; i < entriesSize; i++)
+        for(int i = 0; i < roundedUpSize; i++)
             table[i] = new DynamicHashTable(temp[i], maxStrLen);
     }
 
