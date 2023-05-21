@@ -34,11 +34,11 @@ public class Dictionary implements IDictionary {
     public void initiate(){
         Scanner sc = new Scanner(System.in);
         try{
-            System.out.println("""
+            System.out.print("""
                     Choose Perfect Hash Table Type:
                     1. O(N^2) space
                     2. O(N) space
-                    > """);
+                    >\s""");
             int option = sc.nextInt(), maxStrLen;
             if (option == 1)
                 this.tableType = 1;
@@ -46,28 +46,33 @@ public class Dictionary implements IDictionary {
                 this.tableType = 2;
             else
                 throw new RuntimeException();
-            System.out.println("""
+            System.out.print("""
                     Enter the maximum length of words to be hashed:
-                    > """);
+                    >\s""");
             maxStrLen = sc.nextInt();
             if (maxStrLen < 1) throw new RuntimeException();
-            System.out.println("""
+            System.out.print("""
                     Start with an empty table or read words from a file?
                     1. Empty table
                     2. Read from file
-                    > """);
+                    >\s""");
             option = sc.nextInt();
 
             switch (option) {
-                case 1 ->
+                case 1 -> {
+                    System.out.print("""
+                            Enter the size of the table:
+                            >\s""");
+                    int size = sc.nextInt();
+                    if (size < 1) throw new RuntimeException();
                     ht = (tableType == 1) ?
-                            new PerfectHashTable1(0, maxStrLen) : new PerfectHashTable2(0, maxStrLen);
-
+                            new PerfectHashTable1(size, maxStrLen) : new PerfectHashTable2(size, maxStrLen);
+                }
                 case 2 -> {
                     String filePath;
                     System.out.println("""
                         Enter the name of the file containing words:
-                        > """);
+                        >\s""");
                     filePath = sc.nextLine();
                     ArrayList<String> entries = FileManager.readFile(filePath);
                     ht = (tableType == 1) ?
@@ -91,7 +96,7 @@ public class Dictionary implements IDictionary {
             if(setCommand(option) == -1) continue;
             command = invoker.invoke(eCommand);
             long time = command.execute(ht);
-            System.out.println("Time in microseconds: " + time);
+            System.out.println("Time in milliseconds: " + time);
         }
     }
 
