@@ -2,9 +2,9 @@ package Hashing;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 public class MatrixHash{
-    private int b;
-    public int u;
-    private byte[][] hashFunction;
+    private final int b;
+    public final int u;
+    private final byte[][] hashFunction;
 
     public MatrixHash(int b, int u){
         this.b = b;
@@ -19,25 +19,29 @@ public class MatrixHash{
     }
 
     public int getHashValue(String val){
-        if(val.length() * 8 > this.u)
-            return -1;
-        byte[] key = new byte[this.hashFunction[0].length];
-
-        byte[] valChars = val.getBytes();
-
-        for(int uCounter = 0; uCounter < valChars.length; uCounter++){
-            for(int bitCounter = 0; bitCounter < 8; bitCounter++){
-                if(((valChars[uCounter] >> bitCounter) & 1) == 1){
-                    for(int bCounter = 0; bCounter < this.hashFunction[0].length; bCounter++)
-                        key[bCounter] ^= this.hashFunction[8 * uCounter + bitCounter][bCounter];
-                }
-            }
-        }
-
-        int ret = 0;
-        for(int i = 0; i < key.length; i++)
-            ret += (((int)key[i]) << (8 * i));
-        ret &= ((1 << this.b) - 1);
-        return ret >> 1;
+        long hash = 5381;
+        for(char c : val.toCharArray())
+            hash = ((hash << 5) + hash) + c;
+        return (int) (Math.abs(hash) % (1 << this.b));
+//        if(val.length() * 8 > this.u)
+//            return -1;
+//        byte[] key = new byte[this.hashFunction[0].length];
+//
+//        byte[] valChars = val.getBytes();
+//
+//        for(int uCounter = 0; uCounter < valChars.length; uCounter++){
+//            for(int bitCounter = 0; bitCounter < 8; bitCounter++){
+//                if(((valChars[uCounter] >> bitCounter) & 1) == 1){
+//                    for(int bCounter = 0; bCounter < this.hashFunction[0].length; bCounter++)
+//                        key[bCounter] ^= this.hashFunction[8 * uCounter + bitCounter][bCounter];
+//                }
+//            }
+//        }
+//
+//        int ret = 0;
+//        for(int i = 0; i < key.length; i++)
+//            ret += (((int)key[i]) << (8 * i));
+//        ret &= ((1 << this.b) - 1);
+//        return ret >> 1;
     }
 }
