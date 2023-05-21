@@ -5,5 +5,5 @@ public interface IDictionary {
 
     void printIntro();
 
-    void initiate(int option);
+    void initiate();
 }

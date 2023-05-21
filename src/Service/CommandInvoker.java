@@ -22,12 +22,12 @@ class Search implements CLICommand {
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-        found = table.search(word); //TODO replace this line with search method
+        found = table.search(word);
         long endTime = System.nanoTime();
-        if(found) {
-            System.out.println("Word " + word + " Exists!!");
+        if(found){
+            System.out.println("Word " + word + " exists.");
         } else {
-            System.out.println("Word " + word + " does not exist");
+            System.out.println("Word " + word + " does not exist.");
         }
         return (endTime - startTime) / 1000;
     }
@@ -41,12 +41,12 @@ class Insert implements CLICommand {
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-        found = table.insert(word); //TODO replace this line with insert method
+        found = table.insert(word);
         long endTime = System.nanoTime();
         if(found) {
-            System.out.println("Word " + word + " inserted successfully!!");
+            System.out.println("Word " + word + " inserted successfully.");
         } else {
-            System.out.println("Word " + word + " already exists");
+            System.out.println("Insertion failed due to word already existing or reaching size limit.");
         }
         return (endTime - startTime) / 1000;
     }
@@ -60,12 +60,12 @@ class Delete implements CLICommand {
         String word = sc.nextLine();
         boolean found;
         long startTime = System.nanoTime();
-        found = table.delete(word); //TODO replace this line with delete method
+        found = table.delete(word);
         long endTime = System.nanoTime();
         if(found) {
-            System.out.println("Word " + word + " deleted successfully!!");
+            System.out.println("Word " + word + " deleted successfully.");
         } else {
-            System.out.println("Word " + word + " does not exist!");
+            System.out.println("Word " + word + " does not exist.");
         }
         return  (endTime - startTime) / 1000;
     }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-    public static List<String> readFile(String path) {
-        List<String> words = new ArrayList<>();
+    public static ArrayList<String> readFile(String path) {
+        ArrayList<String> words = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;

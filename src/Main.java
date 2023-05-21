@@ -2,6 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+import Dictionary.*;
 
 public class Main {
     private static final int MIN_STRING_LENGTH = 15; // Minimum length of each random string
@@ -21,6 +22,8 @@ public class Main {
         } catch (IOException e) {
             System.err.println("An error occurred while writing to the file: " + e.getMessage());
         }
+//        IDictionary dict = new Dictionary();
+//        dict.startProgram();
     }
 
     private static String generateRandomString() {
