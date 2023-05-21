@@ -170,8 +170,7 @@ public class PerfectHashTable1Test {
         Assertions.assertEquals(0, hashTable.numberOfElements());
         Assertions.assertEquals(268435456, hashTable.tableSize());
 
-        FileManager fileReader = new FileManager();
-        ArrayList<String> words = fileReader.readFile("./random_strings.txt");
+        ArrayList<String> words = (ArrayList<String>) FileManager.readFile("./random_strings.txt");
         hashTable.batchInsert(words);
         System.out.println(hashTable.getRehashes());
         Assertions.assertEquals(15000, hashTable.numberOfElements());

@@ -5,10 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileManager {
-    public ArrayList<String> readFile(String path) {
-        ArrayList<String> words = new ArrayList<>();
+    public static List<String> readFile(String path) {
+        List<String> words = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
@@ -21,7 +22,7 @@ public class FileManager {
         return words;
     }
 
-    public static void writeStringToFile(ArrayList<String> base, String filename) throws IOException {
+    public static void writeStringToFile(List<String> base, String filename) throws IOException {
         try {
             FileWriter writer = new FileWriter(filename);
             for (String word : base) {
@@ -34,7 +35,7 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    public static void writeLongToFile(ArrayList<Long> base, String filename) throws IOException {
+    public static void writeLongToFile(List<Long> base, String filename) throws IOException {
         try {
             FileWriter writer = new FileWriter(filename);
             for (long word : base) {
@@ -47,10 +48,10 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    public static void writeIntToFile(ArrayList<Integer> base, String filename) throws IOException {
+    public static void writeIntToFile(List<Integer> base, String filename) throws IOException {
         try {
             FileWriter writer = new FileWriter(filename);
-            for (int word : base) {
+            for (Integer word : base) {
                 writer.write(word + "\n"); // write word followed by newline character
             }
             writer.close();
