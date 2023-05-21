@@ -13,7 +13,6 @@ public class BatchInsert implements CLICommand {
         System.out.print("> ");
         String path = sc.nextLine();
         ArrayList<String> words = FileManager.readFile(path);
-        new Point();
         long startTime = System.nanoTime();
         Point feedback = batchInsert(table, words);
         long endTime = System.nanoTime();
