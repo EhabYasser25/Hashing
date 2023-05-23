@@ -59,14 +59,18 @@ public class PerfectHashTable2 implements HashTable{
 
     @Override
     public boolean insert(String s) {
-        boolean success = table[primaryHash.getHashValue(s)].insert(s);
+        int index = primaryHash.getHashValue(s);
+        if (index == -1) return false; // Exceeds character limit
+        boolean success = table[index].insert(s);
         if (success) elementCount++;
         return success;
     }
 
     @Override
     public boolean delete(String s) {
-        boolean success = table[primaryHash.getHashValue(s)].delete(s);
+        int index = primaryHash.getHashValue(s);
+        if (index == -1) return false; // Exceeds character limit
+        boolean success = table[index].delete(s);
         if (success) elementCount--;
         return success;
     }
@@ -86,7 +90,11 @@ public class PerfectHashTable2 implements HashTable{
     }
 
     @Override
-    public boolean search(String s) {return table[primaryHash.getHashValue(s)].search(s);}
+    public boolean search(String s) {
+        int index = primaryHash.getHashValue(s);
+        if (index == -1) return false; // Exceeds character limit
+        return table[index].search(s);
+    }
 
     public int numberOfElements() {return elementCount;}
 
@@ -95,11 +103,6 @@ public class PerfectHashTable2 implements HashTable{
         int total = rehashes; // Level 1 construction rehashes.
         for(DynamicHashTable t : table) total += t.getRehashes();
         return total;
-    }
-
-    @Override
-    public int getMaxStrLen(){
-        return maxStrBits/8;
     }
 
     public int tableSize() {

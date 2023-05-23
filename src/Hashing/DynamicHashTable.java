@@ -59,7 +59,9 @@ public class DynamicHashTable implements HashTable {
             for (String entry : nonNull) {
                 index = hash.getHashValue(entry);
                 // Only insert if the element is in an empty spot.
-                if (elementArray[index] == null)
+                if (index == -1) // Exceeds character limit
+                    fails++;
+                else if (elementArray[index] == null)
                     elementArray[index] = entry;
                 else if (elementArray[index].equals(entry)) // Element already exists
                     fails++;
@@ -76,6 +78,7 @@ public class DynamicHashTable implements HashTable {
     @Override
     public boolean insert(String s) {
         int index = hash.getHashValue(s);
+        if (index == -1) return false; // Exceeds limit
         // Element does not exist
         if (elementArray[index] != null) {
             if (elementArray[index].equals(s)) return false; // Element already exists.
@@ -92,7 +95,8 @@ public class DynamicHashTable implements HashTable {
     @Override
     public boolean delete(String s){
         int index = hash.getHashValue(s);
-        if (elementArray[index] == null) return false;
+        // Exceeds character limit or not found.
+        if (index == -1 || elementArray[index] == null) return false;
         elementArray[index] = null;
         elementCount--;
         return true;
@@ -133,11 +137,6 @@ public class DynamicHashTable implements HashTable {
 
     @Override
     public int getRehashes() { return rehashes; }
-
-    @Override
-    public int getMaxStrLen(){
-        return maxStrBits/8;
-    }
 
     public int numberOfElements(){
         return elementCount;

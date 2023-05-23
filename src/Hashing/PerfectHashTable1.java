@@ -97,8 +97,9 @@ public class PerfectHashTable1 implements HashTable{
     @Override
     public boolean insert(String s) {
         int index = hash.getHashValue(s);
-        // Insertion fails if the list already has n elements.
-        if (elementCount == elementBound) return false;
+        // Insertion fails if character limit is exceeded,
+        // or the list already has n elements.
+        if (index == -1 || elementCount == elementBound) return false;
         if (elementArray[index] != null){
             // Element already exists.
             if (elementArray[index].equals(s)) return false;
@@ -114,9 +115,10 @@ public class PerfectHashTable1 implements HashTable{
     @Override
     public boolean delete(String s) {
         int index = hash.getHashValue(s);
-        // Deletion fails if element doesn't exist or
-        // there's a different element in its slot.
-        if (elementArray[index] == null || !elementArray[index].equals(s)) return false;
+        // Deletion fails if character limit is exceeded, element
+        // doesn't exist or there's a different element in its slot.
+        if (index == -1 || elementArray[index] == null || !elementArray[index].equals(s))
+            return false;
         elementArray[index] = null;
         elementCount--;
         return true;
@@ -142,17 +144,13 @@ public class PerfectHashTable1 implements HashTable{
     @Override
     public boolean search(String s) {
         int index = hash.getHashValue(s);
-        if (elementArray[index] == null) return false;
+        // Exceeds character limit or not found.
+        if (index == -1 || elementArray[index] == null) return false;
         return elementArray[index].equals(s);
     }
 
     @Override
     public int getRehashes() { return rehashes; }
-
-    @Override
-    public int getMaxStrLen(){
-        return maxStrBits/8;
-    }
 
     public int numberOfElements(){
         return elementCount;

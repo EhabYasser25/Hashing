@@ -29,10 +29,6 @@ class Search implements CLICommand {
     public long execute(HashTable table) {
         System.out.print("Enter Word to search: ");
         String word = sc.nextLine();
-        if (word.length() > table.getMaxStrLen()){
-            System.out.println("The word entered exceeds the character limit.");
-            return 0;
-        }
         boolean found;
         long startTime = System.nanoTime();
         found = table.search(word);
@@ -52,10 +48,6 @@ class Insert implements CLICommand {
     public long execute(HashTable table) {
         System.out.print("Enter Word to insert: ");
         String word = sc.nextLine();
-        if (word.length() > table.getMaxStrLen()){
-            System.out.println("The word entered exceeds the character limit.");
-            return 0;
-        }
         boolean found;
         long startTime = System.nanoTime();
         found = table.insert(word);
@@ -75,10 +67,6 @@ class Delete implements CLICommand {
     public long execute(HashTable table) {
         System.out.print("Enter Word to delete: ");
         String word = sc.nextLine();
-        if (word.length() > table.getMaxStrLen()){
-            System.out.println("The word entered exceeds the character limit.");
-            return 0;
-        }
         boolean found;
         long startTime = System.nanoTime();
         found = table.delete(word);

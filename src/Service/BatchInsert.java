@@ -16,7 +16,8 @@ public class BatchInsert implements CLICommand {
         long startTime = System.nanoTime();
         Point feedback = batchInsert(table, words);
         long endTime = System.nanoTime();
-        System.out.println("Number of words inserted: " + feedback.y + "\nNumber of words found: " + feedback.x);
+        System.out.println("Number of words inserted successfully: " + feedback.y +
+                "\nNumber of words that could not be inserted: " + feedback.x);
         return (endTime - startTime) / 1000;
     }
 

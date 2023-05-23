@@ -16,7 +16,8 @@ public class BatchDelete implements CLICommand {
         long startTime = System.nanoTime();
         Point feedback = batchDelete(table, words);
         long endTime = System.nanoTime();
-        System.out.println("Number of words deleted: " + feedback.x + "\nNumber of words not found: " + feedback.y);
+        System.out.println("Number of words deleted successfully: " + feedback.x +
+                "\nNumber of words that could not be deleted: " + feedback.y);
         return (endTime - startTime) / 1000;
     }
 
