@@ -26,7 +26,6 @@ public class Dictionary implements IDictionary {
             3. Batch Insert
             4. Batch Delete
             5. Search
-            6. Size
             0. Exit""");
         programLoop();
     }
@@ -102,7 +101,7 @@ public class Dictionary implements IDictionary {
 
     public int setCommand(int option) {
         if (option == 0) System.exit(0);
-        if (option > 6 || option < 0){
+        if (option > 5 || option < 0){
             System.out.println("Invalid input!!");
             return -1;
         }
