@@ -5,5 +5,6 @@ public enum Commands {
     DELETE,
     BATCHINSERT,
     BATCHDELETE,
+    REHASHES,
     SEARCH
 }

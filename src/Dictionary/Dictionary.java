@@ -25,8 +25,8 @@ public class Dictionary implements IDictionary {
             2. Delete Word
             3. Batch Insert
             4. Batch Delete
-            5. Search
-            6. Size
+            5. Number of Rehashes
+            6. Search
             0. Exit""");
         programLoop();
     }
@@ -95,8 +95,10 @@ public class Dictionary implements IDictionary {
             option = sc.nextInt();
             if(setCommand(option) == -1) continue;
             command = invoker.invoke(eCommand);
-            long time = command.execute(ht);
-            System.out.println("Time in milliseconds: " + time);
+            if (eCommand != Commands.REHASHES){
+                long time = command.execute(ht);
+                System.out.println("Time in milliseconds: " + time);
+            }
         }
     }
 

@@ -146,6 +146,9 @@ public class PerfectHashTable1 implements HashTable{
         return elementArray[index].equals(s);
     }
 
+    @Override
+    public int getRehashes() { return rehashes; }
+
     public int numberOfElements(){
         return elementCount;
     }
@@ -154,5 +157,4 @@ public class PerfectHashTable1 implements HashTable{
         return elementArray.length;
     }
 
-    public int getRehashes() { return rehashes; }
 }

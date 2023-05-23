@@ -131,6 +131,9 @@ public class DynamicHashTable implements HashTable {
         return (elementArray[index] != null && elementArray[index].equals(s));
     }
 
+    @Override
+    public int getRehashes() { return rehashes; }
+
     public int numberOfElements(){
         return elementCount;
     }
@@ -138,6 +141,4 @@ public class DynamicHashTable implements HashTable {
     public int tableSize(){
         return elementArray.length;
     }
-
-    public int getRehashes() { return rehashes; }
 }

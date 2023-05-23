@@ -9,4 +9,5 @@ public interface HashTable {
     boolean delete(String s);
     int batchDelete(ArrayList<String> s);
     boolean search(String s);
+    int getRehashes();
 }

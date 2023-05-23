@@ -5,12 +5,21 @@ import java.util.Scanner;
 public class CommandInvoker {
     public CLICommand invoke(Commands command) {
         return switch (command) {
+            case REHASHES -> new Rehashes();
             case SEARCH -> new Search();
             case INSERT -> new Insert();
             case DELETE -> new Delete();
             case BATCHINSERT -> new BatchInsert();
             case BATCHDELETE -> new BatchDelete();
         };
+    }
+}
+
+class Rehashes implements CLICommand {
+    @Override
+    public long execute(HashTable table) {
+        System.out.println("The table has been rehashed " + table.getRehashes() + " times.");
+        return 0;
     }
 }
 

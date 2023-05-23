@@ -90,6 +90,13 @@ public class PerfectHashTable2 implements HashTable{
 
     public int numberOfElements() {return elementCount;}
 
+    @Override
+    public int getRehashes() {
+        int total = rehashes; // Level 1 construction rehashes.
+        for(DynamicHashTable t : table) total += t.getRehashes();
+        return total;
+    }
+
     public int tableSize() {
         int size = 0;
         for (DynamicHashTable t : table)
@@ -99,11 +106,5 @@ public class PerfectHashTable2 implements HashTable{
 
     public int primaryTableSize() {
         return table.length;
-    }
-
-    public int getRehashes() {
-        int total = rehashes; // Level 1 construction rehashes.
-        for(DynamicHashTable t : table) total += t.getRehashes();
-        return total;
     }
 }
