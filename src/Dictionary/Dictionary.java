@@ -70,13 +70,29 @@ public class Dictionary implements IDictionary {
                     ht = (tableType == 1) ?
                             new PerfectHashTable1(size, maxStrLen) : new PerfectHashTable2(size, maxStrLen);
                 }
+
                 case 2 -> {
                     String filePath;
-                    System.out.println("""
-                        Enter the name of the file containing words:
-                        >\s""");
-                    filePath = sc.nextLine();
-                    ArrayList<String> entries = FileManager.readFile(filePath);
+                    System.out.println("Enter file path that contains the list of words: ");
+                    System.out.print("> ");
+                    ArrayList<String> entries = null;
+                    sc.nextLine();
+                    while(entries == null) {
+                        filePath = sc.nextLine();
+                        entries = FileManager.readFile(filePath);
+                        if (entries == null ) {
+                            System.out.println("Enter file path that contains the list of words: ");
+                            System.out.print("> ");
+                        }else{
+                            for (String entry : entries) {
+                                if (entry.length() > maxStrLen) {
+                                    System.out.println("The file you entered has words that exceed the character limit.");
+                                    entries = null;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     ht = (tableType == 1) ?
                             new PerfectHashTable1(entries, maxStrLen) : new PerfectHashTable2(entries, maxStrLen);
                 }
@@ -117,6 +133,6 @@ public class Dictionary implements IDictionary {
     }
 
     public void printIntro() {
-        System.out.println("\n\nNo fancy intro this time, estantego enta ya bashmohandes\n\n");
+        System.out.println("\n\n\n\n");
     }
 }

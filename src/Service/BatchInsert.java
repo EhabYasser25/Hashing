@@ -9,10 +9,12 @@ public class BatchInsert implements CLICommand {
 
     @Override
     public long execute(HashTable table) {
-        System.out.print("Enter File path to the file path: ");
+        System.out.println("Enter file path that contains the list of words ");
         System.out.print("> ");
         String path = sc.nextLine();
         ArrayList<String> words = FileManager.readFile(path);
+        if(words == null)
+            return 0;
         long startTime = System.nanoTime();
         Point feedback = batchInsert(table, words);
         long endTime = System.nanoTime();
