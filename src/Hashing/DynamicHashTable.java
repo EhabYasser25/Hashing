@@ -95,8 +95,8 @@ public class DynamicHashTable implements HashTable {
     @Override
     public boolean delete(String s){
         int index = hash.getHashValue(s);
-        // Exceeds character limit or not found.
-        if (index == -1 || elementArray[index] == null) return false;
+        // Exceeds character limit, not found, or not the same element.
+        if (index == -1 || elementArray[index] == null || !elementArray[index].equals(s)) return false;
         elementArray[index] = null;
         elementCount--;
         return true;

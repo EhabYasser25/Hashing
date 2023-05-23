@@ -54,8 +54,6 @@ public class PerfectHashTable1Test {
         hashTable.insert("banana");
         hashTable.insert("cherry");
 
-        System.out.println(hashTable.getRehashes());
-
         Assertions.assertTrue(hashTable.search("banana"));
         Assertions.assertFalse(hashTable.search("kiwi"));
     }
@@ -165,24 +163,15 @@ public class PerfectHashTable1Test {
     }
 
     @Test
-    public void testRehashing() throws Exception {
-        PerfectHashTable1 hashTable = new PerfectHashTable1(15000,30);
+    public void testBidData() throws Exception {
+        PerfectHashTable1 hashTable = new PerfectHashTable1(20000,30);
         Assertions.assertEquals(0, hashTable.numberOfElements());
-        Assertions.assertEquals(268435456, hashTable.tableSize());
+        Assertions.assertEquals(536870912, hashTable.tableSize());
 
-        ArrayList<String> words = (ArrayList<String>) FileManager.readFile("./random_strings.txt");
-        hashTable.batchInsert(words);
-        System.out.println(hashTable.getRehashes());
-        Assertions.assertEquals(15000, hashTable.numberOfElements());
-    }
-
-    @Test
-    public void testRehashes() throws Exception {
-        PerfectHashTable1 table = new PerfectHashTable1(10,7);
-        table.insert("hello");
-        table.insert("world");
-        table.insert("goodbye");
-        System.out.println(table.getRehashes());
+        ArrayList<String> words = FileManager.readFile("src/Tests/20K_Words.txt");
+        if(words != null)
+            hashTable.batchInsert(words);
+        Assertions.assertEquals(20000, hashTable.numberOfElements());
     }
 
     @Test

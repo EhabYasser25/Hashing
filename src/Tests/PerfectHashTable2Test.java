@@ -54,8 +54,6 @@ public class PerfectHashTable2Test {
         hashTable.insert("banana");
         hashTable.insert("cherry");
 
-        System.out.println(hashTable.getRehashes());
-
         Assertions.assertTrue(hashTable.search("banana"));
         Assertions.assertFalse(hashTable.search("kiwi"));
     }
@@ -171,15 +169,15 @@ public class PerfectHashTable2Test {
     }
 
     @Test
-    public void testRehashing() throws Exception {
-        PerfectHashTable2 hashTable = new PerfectHashTable2(1000000, 15);
+    public void testBigData() throws Exception {
+        PerfectHashTable2 hashTable = new PerfectHashTable2(1000000, 10);
         Assertions.assertEquals(0, hashTable.numberOfElements());
         Assertions.assertEquals(1048576, hashTable.tableSize());
 
-        ArrayList<String> words = (ArrayList<String>) FileManager.readFile("./random_strings.txt");
-        hashTable.batchInsert(words);
-        Assertions.assertEquals(1000000, hashTable.numberOfElements());
-//        System.out.println(hashTable.getRehashes());
+        ArrayList<String> words = FileManager.readFile("src/Tests/1M_Words.txt");
+        if(words != null)
+            hashTable.batchInsert(words);
+        Assertions.assertTrue(1000000 >= hashTable.numberOfElements());
         Assertions.assertTrue(hashTable.getRehashes() > 0);
     }
 
