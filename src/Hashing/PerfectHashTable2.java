@@ -97,6 +97,11 @@ public class PerfectHashTable2 implements HashTable{
         return total;
     }
 
+    @Override
+    public int getMaxStrLen(){
+        return maxStrBits/8;
+    }
+
     public int tableSize() {
         int size = 0;
         for (DynamicHashTable t : table)

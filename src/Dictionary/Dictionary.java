@@ -15,6 +15,7 @@ public class Dictionary implements IDictionary {
     CLICommand command;
     Commands eCommand;
     int tableType = 0;
+    int maxStrLen;
 
     public void startProgram() {
         printIntro();
@@ -51,6 +52,7 @@ public class Dictionary implements IDictionary {
                     >\s""");
             maxStrLen = sc.nextInt();
             if (maxStrLen < 1) throw new RuntimeException();
+            this.maxStrLen = maxStrLen;
             System.out.print("""
                     Start with an empty table or read words from a file?
                     1. Empty table
@@ -95,7 +97,9 @@ public class Dictionary implements IDictionary {
             option = sc.nextInt();
             if(setCommand(option) == -1) continue;
             command = invoker.invoke(eCommand);
-            if (eCommand != Commands.REHASHES){
+            if (eCommand == Commands.REHASHES){
+                command.execute(ht);
+            }else{
                 long time = command.execute(ht);
                 System.out.println("Time in milliseconds: " + time);
             }

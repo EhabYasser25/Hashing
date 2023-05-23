@@ -149,6 +149,11 @@ public class PerfectHashTable1 implements HashTable{
     @Override
     public int getRehashes() { return rehashes; }
 
+    @Override
+    public int getMaxStrLen(){
+        return maxStrBits/8;
+    }
+
     public int numberOfElements(){
         return elementCount;
     }

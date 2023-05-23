@@ -10,4 +10,5 @@ public interface HashTable {
     int batchDelete(ArrayList<String> s);
     boolean search(String s);
     int getRehashes();
+    int getMaxStrLen();
 }
