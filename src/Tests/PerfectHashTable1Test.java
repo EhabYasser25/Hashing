@@ -2,6 +2,7 @@ package Tests;
 
 import Hashing.PerfectHashTable1;
 
+import Hashing.PerfectHashTable2;
 import Service.FileManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -189,5 +190,16 @@ public class PerfectHashTable1Test {
         Assertions.assertEquals(1, table.numberOfElements());
         Assertions.assertEquals(1, table.tableSize());
         Assertions.assertEquals(0, table.getRehashes());
+    }
+
+    @Test
+    public void compareRehashes() throws Exception {
+        PerfectHashTable1 table1 = new PerfectHashTable1(20000,30);
+        PerfectHashTable2 table2 = new PerfectHashTable2(20000,30);
+        ArrayList<String> words = FileManager.readFile("src/Tests/20K_Words.txt");
+        table1.batchInsert(words);
+        table2.batchInsert(words);
+        System.out.println(table1.getRehashes() + " " + table2.getRehashes());
+        Assertions.assertTrue(table1.getRehashes() < table2.getRehashes());
     }
 }
