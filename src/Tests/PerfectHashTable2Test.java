@@ -175,8 +175,8 @@ public class PerfectHashTable2Test {
         Assertions.assertEquals(1048576, hashTable.tableSize());
 
         ArrayList<String> words = FileManager.readFile("src/Tests/1M_Words.txt");
-        if(words != null)
-            hashTable.batchInsert(words);
+        assert words != null;
+        hashTable.batchInsert(words);
         Assertions.assertTrue(1000000 >= hashTable.numberOfElements());
         Assertions.assertTrue(hashTable.getRehashes() > 0);
     }
