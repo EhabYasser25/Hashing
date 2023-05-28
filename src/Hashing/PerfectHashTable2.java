@@ -42,6 +42,7 @@ public class PerfectHashTable2 implements HashTable{
         ArrayList<String>[] temp;
         // generate a primary hash function that satisfies the condition that Σ(ni^2) < 2N
         while (true){
+            System.out.println("etnyl b2a");
             primaryHash = new MatrixHash(b, maxStrBits);
             rehashes++;
             temp = new ArrayList[roundedUpSize];
@@ -50,7 +51,7 @@ public class PerfectHashTable2 implements HashTable{
             int tempElementsSquaredSum = 0;
             for(ArrayList<String> bucket : temp)
                 tempElementsSquaredSum += Math.pow(bucket.size(), 2);
-            if(tempElementsSquaredSum < 2 * temp.length)
+            if(tempElementsSquaredSum < 3 * temp.length)
                 break;
         }
         for(int i = 0; i < roundedUpSize; i++)

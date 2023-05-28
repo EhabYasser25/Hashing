@@ -117,7 +117,7 @@ public class Dictionary implements IDictionary {
                 command.execute(ht);
             }else{
                 long time = command.execute(ht);
-                System.out.println("Time in milliseconds: " + time);
+                System.out.println("Time in milliseconds: " + time/1000);
             }
         }
     }
